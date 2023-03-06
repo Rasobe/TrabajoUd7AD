@@ -1,84 +1,67 @@
 package com.dam2.ud7.entity;
 
-import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+import javax.management.relation.Role;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	@NotEmpty
+	private Long id;
+
+	@Column(name = "username")
 	private String username;
 
-	@NotEmpty
+	@Column(name = "password")
 	private String password;
 
-	private String role;
-
-	@Email
-	@NotEmpty
+	@Column(name = "email")
 	private String email;
 
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-	private Set<Curso> cursos;
+	@Column(name = "enabled")
+	private boolean enabled;
 
-	public Usuario(String username, @NotEmpty String password, @Email @NotEmpty String email) {
-		super();
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Set<Role> roles = new HashSet<>();
+
+	// constructor vacío
+	public Usuario() {
+	}
+
+	// constructor con parámetros
+	public Usuario(String username, String password, String email, boolean enabled) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
+		this.enabled = enabled;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Usuario() {
-		super();
-	}
-
-	public Set<Curso> getCursos() {
-		return cursos;
-	}
-
-	public void setCursos(Set<Curso> cursos) {
-		this.cursos = cursos;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getUsername() {
 		return username;
 	}
 
-	public void setUsername(String nombreUsuario) {
-		this.username = nombreUsuario;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -89,16 +72,28 @@ public class Usuario implements Serializable {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setRole(String rol) {
-		this.role = rol;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 }

@@ -34,11 +34,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.logout();
 				
 	}
-	
-	
-	
-	
-	
-	
-
 }

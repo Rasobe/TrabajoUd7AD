@@ -104,6 +104,7 @@ public class UsuarioController {
 
 	@GetMapping(value = "/usuarios")
 	public String listar(Model model) {
+		System.out.println(currentUser());
 		model.addAttribute("titulo", "Listado de usuarios");
 		model.addAttribute("usuarios", usuarioDao.findAll());
 		return "listarUsuarios";

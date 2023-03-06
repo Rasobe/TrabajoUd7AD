@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Formulario de login</title>
+	<title>Formulario de registro</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
 		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
@@ -12,7 +12,7 @@
 
 	<section class="vh-100 gradient-custom">
 		<div class="container py-5 h-100">
-			<form class="form-signin" th:action="@{/login}" method="post">
+			<form class="form-signin" th:action="@{/register/guardar}" th:object="${usuario}" method="post">
 				<div class="row d-flex justify-content-center align-items-center h-100">
 					<div class="col-12 col-md-8 col-lg-6 col-xl-5">
 						<div class="card bg-dark text-white" style="border-radius: 1rem;">
@@ -20,30 +20,35 @@
 
 								<div class="mb-md-5 mt-md-4 pb-5">
 
-									<h2 class="fw-bold mb-2 text-uppercase">Inicio de sesión</h2>
-									<p class="text-white-50 mb-5">Porfavor introduzca su nombre de usuario y contraseña
+									<h2 class="fw-bold mb-2 text-uppercase">Registrar nuevo usuario</h2>
+									<p class="text-white-50 mb-5">Porfavor introduzca su correo electrónico, nombre de usuario y contraseña
 									</p>
 
 									<div class="form-outline form-white mb-4">
-										<input type="text" id="username" name="username" placeholder="Username" required
+										<input type="email" id="email" th:field="*{email}" name="email" placeholder="Email" required
+											autofocus class="form-control form-control-lg" />
+										<label class="form-label" for="typeUsernameX">Email</label>
+									</div>
+
+									<div class="form-outline form-white mb-4">
+										<input type="text" id="username" th:field="*{username}" name="username" placeholder="Username" required
 											autofocus class="form-control form-control-lg" />
 										<label class="form-label" for="typeUsernameX">Usuario</label>
 									</div>
 
 									<div class="form-outline form-white mb-4">
-										<input type="password" name="password" id="password" placeholder="Password"
+										<input type="password" name="password" id="password" th:field="*{password}" placeholder="Password"
 											required class="form-control form-control-lg" />
 										<label class="form-label" for="typePasswordX">Constraseña</label>
 									</div>
 
-									<button class="btn btn-outline-light btn-lg px-5" type="submit">Iniciar
-										sesión</button>
+									<button class="btn btn-outline-light btn-lg px-5" type="submit">Confirmar</button>
 
 								</div>
 
 								<div>
-									<p class="mb-0">¿No tienes una cuenta?<a th:href="@{/register}" class="text-white-50 fw-bold">
-											Regístrate</a>
+									<p class="mb-0">¿Ya tienes una cuenta creada?<a href="@{/login/}" class="text-white-50 fw-bold">
+											Inicia sesión</a>
 									</p>
 								</div>
 

@@ -1,13 +1,7 @@
-package com.dam2.ud7.entity;
+package com.dam2.ud7.models;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.management.relation.Role;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,8 +27,8 @@ public class Usuario {
 	@Column(name = "enabled")
 	private boolean enabled;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	private Set<Role> roles = new HashSet<>();
+	@Column(name = "role")
+	private String role;
 
 	// constructor vacío
 	public Usuario() {
@@ -88,12 +82,18 @@ public class Usuario {
 		this.enabled = enabled;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", enabled=" + enabled + ", role=" + role + "]";
 	}
 
 }

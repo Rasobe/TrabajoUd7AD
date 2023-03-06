@@ -1,8 +1,8 @@
-package com.dam2.ud7.models;
+package com.dam2.ud7.service;
 
 import java.util.List;
 
-import com.dam2.ud7.entity.Curso;
+import com.dam2.ud7.models.Curso;
 
 public interface CursoDAO {
 

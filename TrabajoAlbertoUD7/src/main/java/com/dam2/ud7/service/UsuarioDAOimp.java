@@ -1,4 +1,4 @@
-package com.dam2.ud7.models;
+package com.dam2.ud7.service;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dam2.ud7.entity.Usuario;
+import com.dam2.ud7.models.Usuario;
 
 @Repository
 public class UsuarioDAOimp implements UsuarioDAO {

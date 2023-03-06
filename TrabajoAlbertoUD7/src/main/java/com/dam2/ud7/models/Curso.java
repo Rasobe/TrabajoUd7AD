@@ -1,4 +1,4 @@
-package com.dam2.ud7.entity;
+package com.dam2.ud7.models;
 
 import java.util.Date;
 

@@ -1,6 +1,5 @@
 package com.dam2.ud7.controller;
 
-import java.util.Date;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -15,9 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.dam2.ud7.entity.Curso;
-import com.dam2.ud7.entity.Usuario;
-import com.dam2.ud7.models.CursoDAO;
+import com.dam2.ud7.models.Curso;
+import com.dam2.ud7.service.CursoDAO;
 
 @Controller
 @SessionAttributes("curso")

@@ -31,7 +31,7 @@
 					<td th:text="${usuario.username}"></td>
 					<td th:text="${usuario.email}"></td>
 					<td th:text="${usuario.password}"></td>
-					<td th:text="${usuario.roles}"></td>
+					<td th:text="${usuario.role}"></td>
 					<td><a class="btn btn-success btn-xs" th:href="@{/cursos/}" th:text="'Cursos'"></a></td>
 					<td><a class="btn btn-primary btn-xs" th:href="@{/usuarios/editar/} + ${usuario.id}" th:text="'Editar'"></a></td>
 					<td><a class="btn btn-danger btn-xs" th:href="@{/usuarios/eliminar/} + ${usuario.id}" th:text="'Eliminar'" onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>

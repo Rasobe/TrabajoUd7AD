@@ -9,6 +9,8 @@ import javax.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +28,7 @@ public class ServiceImplementationUsuario implements UsuarioRepository {
 	public <S extends Usuario> S save(S entity) {
 		return em.merge(entity);
 	}
-	
+
 	@Override
 	public <S extends Usuario> Iterable<S> saveAll(Iterable<S> entities) {
 		return null;
@@ -95,4 +97,13 @@ public class ServiceImplementationUsuario implements UsuarioRepository {
 	public Page<Usuario> findAll(Pageable pageable) {
 		return null;
 	}
+
+	@Override
+	public Optional<Usuario> findByUsername(String username) {
+		Usuario u = (Usuario) em.createQuery("from Usuario where username = :u").setParameter("u", username)
+				.getSingleResult();
+		System.out.println(u.getEmail());
+		return Optional.ofNullable(u);
+	}
+
 }

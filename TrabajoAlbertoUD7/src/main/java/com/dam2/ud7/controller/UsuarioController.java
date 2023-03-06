@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -44,7 +47,6 @@ public class UsuarioController {
 	@PostMapping("/register/guardar")
 	
 	public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult rsult, Model model, SessionStatus status) {
-		System.out.println(usuario);
 		usuario.setEnabled(true);
 		usuario.setRole("ROLE_USER");
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -69,12 +71,16 @@ public class UsuarioController {
 	@PostMapping(value = "/usuarios/guardar")
 	public String guardarCurso(@Valid Usuario usuario, BindingResult result, Model model, SessionStatus status) {
 		status.setComplete();
+		usuario.setRole("ROLE_USER");
+		usuario.setEnabled(true);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		usuario.setPassword(encoder.encode(usuario.getPassword()));
 		usuarioDao.save(usuario);
 		return "redirect:/usuarios";
 	}
 
 	@GetMapping(value = "/usuarios/editar/{id}")
-	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model) {
+	public String editarPorId(@PathVariable(value = "id") Long id, Map<String, Object> model) {
 
 		Usuario usuario = null;
 
@@ -87,7 +93,7 @@ public class UsuarioController {
 		model.put("titulo", "Editar usuario");
 		return "crearUsuarioForm";
 	}
-
+	
 	@GetMapping(value = "/usuarios/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id) {
 		if (id > 0) {
@@ -102,4 +108,15 @@ public class UsuarioController {
 		model.addAttribute("usuarios", usuarioDao.findAll());
 		return "listarUsuarios";
 	}
+	
+	@ResponseBody
+	public String currentUser() {
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    if (principal instanceof UserDetails) {
+	        return ((UserDetails) principal).getUsername();
+	    } else {
+	        return principal.toString();
+	    }
+	}
+	
 }

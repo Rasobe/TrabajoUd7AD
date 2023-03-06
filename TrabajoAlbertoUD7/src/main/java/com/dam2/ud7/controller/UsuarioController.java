@@ -63,7 +63,7 @@ public class UsuarioController {
 
 		model.addAttribute("titulo", "Crear usuario");
 		model.addAttribute("usuario", new Usuario());
-		return "form";
+		return "crearUsuarioForm";
 	}
 
 	@PostMapping(value = "/usuarios/guardar")
@@ -85,7 +85,7 @@ public class UsuarioController {
 		}
 		model.put("usuario", usuario);
 		model.put("titulo", "Editar usuario");
-		return "form";
+		return "crearUsuarioForm";
 	}
 
 	@GetMapping(value = "/usuarios/eliminar/{id}")
@@ -100,6 +100,6 @@ public class UsuarioController {
 	public String listar(Model model) {
 		model.addAttribute("titulo", "Listado de usuarios");
 		model.addAttribute("usuarios", usuarioDao.findAll());
-		return "listar";
+		return "listarUsuarios";
 	}
 }

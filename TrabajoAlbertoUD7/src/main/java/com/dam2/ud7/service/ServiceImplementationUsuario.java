@@ -64,6 +64,7 @@ public class ServiceImplementationUsuario implements UsuarioRepository {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
 		em.remove(em.find(Usuario.class, id));
 	}

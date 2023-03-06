@@ -1,6 +1,7 @@
 package com.dam2.ud7.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -21,14 +22,10 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.dam2.ud7.models.Usuario;
 import com.dam2.ud7.service.ServiceImplementationUsuario;
-import com.dam2.ud7.service.UsuarioDAO;
 
 @Controller
 @SessionAttributes("usuario")
 public class UsuarioController {
-
-	@Autowired
-	private UsuarioDAO usuarioDao;
 
 	@Autowired
 	private ServiceImplementationUsuario siu;
@@ -75,17 +72,17 @@ public class UsuarioController {
 		usuario.setEnabled(true);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		usuario.setPassword(encoder.encode(usuario.getPassword()));
-		usuarioDao.save(usuario);
+		siu.save(usuario);
 		return "redirect:/usuarios";
 	}
 
 	@GetMapping(value = "/usuarios/editar/{id}")
 	public String editarPorId(@PathVariable(value = "id") Long id, Map<String, Object> model) {
 
-		Usuario usuario = null;
+		Optional<Usuario> usuario = null;
 
 		if (id > 0) {
-			usuario = usuarioDao.findOne(id);
+			usuario = siu.findById(id);
 		} else {
 			return "redirect:/cursos";
 		}
@@ -97,7 +94,7 @@ public class UsuarioController {
 	@GetMapping(value = "/usuarios/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id) {
 		if (id > 0) {
-			usuarioDao.delete(id);
+			siu.deleteById(id);
 		}
 		return "redirect:/usuarios";
 	}
@@ -106,7 +103,7 @@ public class UsuarioController {
 	public String listar(Model model) {
 		System.out.println(currentUser());
 		model.addAttribute("titulo", "Listado de usuarios");
-		model.addAttribute("usuarios", usuarioDao.findAll());
+		model.addAttribute("usuarios", siu.findAll());
 		return "listarUsuarios";
 	}
 	

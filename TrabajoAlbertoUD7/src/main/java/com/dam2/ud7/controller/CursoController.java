@@ -7,6 +7,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -76,9 +79,9 @@ public class CursoController {
 	}
 
 	@GetMapping(value = "/cursos")
-	public String listar(Model model) {
+	public String listar(@RequestParam(name = "page", defaultValue = "0")int page, Model model) {
 		model.addAttribute("titulo", "Listado de cursos");
-		model.addAttribute("cursos", sic.findAll());
+		model.addAttribute("cursos", sic.findAll(PageRequest.of(page, 5)));
 		return "listarCursos";
 	}
 	

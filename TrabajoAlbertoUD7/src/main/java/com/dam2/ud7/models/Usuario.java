@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "usuarios")
@@ -16,12 +17,15 @@ public class Usuario {
 	private Long id;
 
 	@Column(name = "username")
+	@NotEmpty
 	private String username;
 
 	@Column(name = "password")
+	@NotEmpty
 	private String password;
 
 	@Column(name = "email")
+	@NotEmpty
 	private String email;
 
 	@Column(name = "enabled")

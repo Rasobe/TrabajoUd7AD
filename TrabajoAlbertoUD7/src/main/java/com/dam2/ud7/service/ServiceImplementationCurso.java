@@ -1,11 +1,13 @@
 package com.dam2.ud7.service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,6 +24,9 @@ public class ServiceImplementationCurso implements CursoRepository {
 	@PersistenceContext
 	private EntityManager em;
 
+    @Autowired
+    private CursoRepository cursoRepository;
+	
 	@Override
 	@Transactional
 	public <S extends Curso> S save(S entity) {
@@ -39,14 +44,14 @@ public class ServiceImplementationCurso implements CursoRepository {
 	@Transactional
 	public void delete(Curso entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	@Transactional
 	public void deleteAll(Iterable<? extends Curso> entities) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -86,13 +91,13 @@ public class ServiceImplementationCurso implements CursoRepository {
 	@Transactional
 	public void deleteAllById(Iterable<? extends Long> ids) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteAll() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -101,19 +106,20 @@ public class ServiceImplementationCurso implements CursoRepository {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<Curso> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		  return cursoRepository.findAll(pageable);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<Curso> findAllByUsuario(Usuario usuario) {
-		for (Curso x : em.createQuery("from Curso where id = :id", Curso.class).setParameter("id", usuario.getId()).getResultList()) {
+		for (Curso x : em.createQuery("from Curso where id = :id", Curso.class).setParameter("id", usuario.getId())
+				.getResultList()) {
 			System.out.println(x.getTitulo());
 		}
-		return em.createQuery("from Curso where usuario_curso = :id").setParameter("id", usuario.getId()).getResultList();
+		return em.createQuery("from Curso where usuario_curso = :id").setParameter("id", usuario.getId())
+				.getResultList();
 	}
-
 
 }

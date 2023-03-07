@@ -40,8 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/login", "/register", "/register/guardar").permitAll().anyRequest()
 				.authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/usuarios").permitAll().and()
 				.logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true)
-				.deleteCookies("JSESSIONID");
-
+				.deleteCookies("JSESSIONID").permitAll();
 	}
 
 }

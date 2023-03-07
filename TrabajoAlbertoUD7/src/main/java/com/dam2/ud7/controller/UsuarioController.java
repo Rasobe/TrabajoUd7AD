@@ -56,6 +56,11 @@ public class UsuarioController {
 		usuario.setRole("ROLE_USER");
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		usuario.setPassword(encoder.encode(usuario.getPassword()));
+		for (Usuario u : siu.findAll()) {
+			if (u.getUsername().equalsIgnoreCase(usuario.getUsername())) {
+				return "register";
+			}
+		}
 		siu.save(usuario);
 		return "login";
 	}

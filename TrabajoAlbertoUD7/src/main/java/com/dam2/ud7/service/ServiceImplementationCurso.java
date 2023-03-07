@@ -110,6 +110,12 @@ public class ServiceImplementationCurso implements CursoRepository {
 	public Page<Curso> findAll(Pageable pageable) {
 		  return cursoRepository.findAll(pageable);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Curso> findAllByUsuario(Pageable pageable, Usuario usuario) {
+		  return cursoRepository.findAllByUsuario(pageable, usuario);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

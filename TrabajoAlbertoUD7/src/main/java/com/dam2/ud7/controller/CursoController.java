@@ -86,17 +86,18 @@ public class CursoController {
 	}
 	
 	@GetMapping("/cursos/miscursos")
-	public String modificarMiperfil(Model model) {
-		model.addAttribute("cursos", sic.findAllByUsuario(siu.findByUsername(currentUser())));
+	public String modificarMiperfil(@RequestParam(name = "page", defaultValue = "0")int page, Model model) {
+		model.addAttribute("cursos", sic.findAllByUsuario(PageRequest.of(page, 5), siu.findByUsername(currentUser())));
 		model.addAttribute("titulo", "Mis cursos");
-		return "listarCursos";
+		return "listarMisCursos";
 	}
 	
 	@GetMapping(value = "/cursos/{username}")
-	public String mostrarCursosDeUsuario(@PathVariable(value = "username") String username, Model model) {
-		model.addAttribute("cursos", sic.findAllByUsuario(siu.findByUsername(username)));
+	public String mostrarCursosDeUsuario(@RequestParam(name = "page", defaultValue = "0")int page, @PathVariable(value = "username") String username, Model model) {
+		model.addAttribute("cursos", sic.findAllByUsuario(PageRequest.of(page, 5), siu.findByUsername(username)));
 		model.addAttribute("titulo", "Cursos de " + username);
-		return "listarCursos";
+		model.addAttribute("username", username);
+		return "listarCursosUsuario";
 	}
 	
 	@ResponseBody

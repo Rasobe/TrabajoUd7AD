@@ -1,8 +1,7 @@
 package com.dam2.ud7.repos;
 
-import java.awt.print.Pageable;
-import java.util.List;
-
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -17,4 +16,6 @@ public interface CursoRepository extends CrudRepository<Curso, Long>, PagingAndS
 
 	public Iterable<Curso> findAllByUsuario(Usuario usuario);
 	
+	public Page<Curso> findAllByUsuario(org.springframework.data.domain.Pageable pageable, Usuario usuario);
+
 }

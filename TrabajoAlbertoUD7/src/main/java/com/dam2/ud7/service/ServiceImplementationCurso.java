@@ -106,4 +106,14 @@ public class ServiceImplementationCurso implements CursoRepository {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<Curso> findAllByUsuario(Usuario usuario) {
+		for (Curso x : em.createQuery("from Curso where id = :id", Curso.class).setParameter("id", usuario.getId()).getResultList()) {
+			System.out.println(x.getTitulo());
+		}
+		return em.createQuery("from Curso where usuario_curso = :id").setParameter("id", usuario.getId()).getResultList();
+	}
+
+
 }

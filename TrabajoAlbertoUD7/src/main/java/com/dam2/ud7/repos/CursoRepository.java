@@ -1,7 +1,5 @@
 package com.dam2.ud7.repos;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +12,6 @@ import com.dam2.ud7.models.Usuario;
 @Repository
 public interface CursoRepository extends CrudRepository<Curso, Long>, PagingAndSortingRepository<Curso, Long> {
 
+	public Iterable<Curso> findAllByUsuario(Usuario usuario);
+	
 }

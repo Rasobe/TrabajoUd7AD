@@ -1,7 +1,5 @@
 package com.dam2.ud7.repos;
 
-import java.util.Optional;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -11,6 +9,6 @@ import com.dam2.ud7.models.Usuario;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, Long>, PagingAndSortingRepository<Usuario, Long> {
 
-	public Optional<Usuario> findByUsername(String username);
+	Usuario findByUsername(String username);
 	
 }

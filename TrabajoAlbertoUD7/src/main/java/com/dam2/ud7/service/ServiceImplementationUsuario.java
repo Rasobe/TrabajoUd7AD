@@ -9,8 +9,6 @@ import javax.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,9 +36,7 @@ public class ServiceImplementationUsuario implements UsuarioRepository {
 	@Override
 	public Optional<Usuario> findById(Long id) {
 		Usuario u = em.find(Usuario.class, id);
-		System.out.println(u.getEmail());
 		return Optional.ofNullable(u);
-
 	}
 
 	@Override
@@ -100,11 +96,9 @@ public class ServiceImplementationUsuario implements UsuarioRepository {
 	}
 
 	@Override
-	public Optional<Usuario> findByUsername(String username) {
-		Usuario u = (Usuario) em.createQuery("from Usuario where username = :u").setParameter("u", username)
-				.getSingleResult();
-		System.out.println(u.getEmail());
-		return Optional.ofNullable(u);
+	public Usuario findByUsername(String username) {
+		return em.createQuery("select u from Usuario u where u.username = :u", Usuario.class).setParameter("u", username).getSingleResult();
 	}
+
 
 }

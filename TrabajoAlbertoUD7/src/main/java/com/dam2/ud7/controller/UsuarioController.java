@@ -1,14 +1,21 @@
 package com.dam2.ud7.controller;
 
+
 import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.logout.DelegatingServerLogoutHandler;
+import org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler;
+import org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,13 +44,14 @@ public class UsuarioController {
 
 	@GetMapping("/register")
 	public String register(Model model) {
-		model.addAttribute("usuario" ,new Usuario());
+		model.addAttribute("usuario", new Usuario());
 		return "register";
 	}
-	
+
 	@PostMapping("/register/guardar")
-	
-	public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult rsult, Model model, SessionStatus status) {
+
+	public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult rsult, Model model,
+			SessionStatus status) {
 		usuario.setEnabled(true);
 		usuario.setRole("ROLE_USER");
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -83,14 +91,26 @@ public class UsuarioController {
 
 		if (id > 0) {
 			usuario = siu.findById(id);
+			if (usuario.isEmpty()) {
+				return "redirect:/cursos";
+			}
 		} else {
 			return "redirect:/cursos";
 		}
-		model.put("usuario", usuario);
+		model.put("usuario", usuario.get());
 		model.put("titulo", "Editar usuario");
 		return "crearUsuarioForm";
 	}
-	
+
+	@GetMapping("/usuarios/editar/miperfil")
+	public String modificarMiperfil(Model model) {
+		String username = currentUser();
+		Usuario u = siu.findByUsername(username);
+		model.addAttribute("usuario", u);
+		model.addAttribute("titulo", "Editar mi usuario");
+		return "crearUsuarioForm";
+	}
+
 	@GetMapping(value = "/usuarios/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id) {
 		if (id > 0) {
@@ -106,15 +126,15 @@ public class UsuarioController {
 		model.addAttribute("usuarios", siu.findAll());
 		return "listarUsuarios";
 	}
-	
+
 	@ResponseBody
 	public String currentUser() {
-	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    if (principal instanceof UserDetails) {
-	        return ((UserDetails) principal).getUsername();
-	    } else {
-	        return principal.toString();
-	    }
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			return ((UserDetails) principal).getUsername();
+		} else {
+			return principal.toString();
+		}
 	}
-	
+
 }

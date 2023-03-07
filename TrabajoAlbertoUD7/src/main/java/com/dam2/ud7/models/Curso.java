@@ -31,10 +31,18 @@ public class Curso {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fechaInicio;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="usuario_curso")
+	@JoinColumn(name = "usuario_curso")
 	private Usuario usuario;
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 	public Curso(long id, @NotEmpty String titulo, @NotEmpty String descripcion, @NotEmpty Date fechaInicio) {
 		super();

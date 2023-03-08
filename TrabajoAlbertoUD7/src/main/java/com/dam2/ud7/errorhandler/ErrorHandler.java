@@ -17,15 +17,18 @@ public class ErrorHandler {
     public ModelAndView handleAllExceptions(Exception exception) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error");
+        System.out.println(exception);
         return modelAndView;
     }
 
     @ExceptionHandler(ResponseStatusException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView handleResponseStatusException(ResponseStatusException exception) {
+    	System.out.println(exception.getMessage());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error");
         modelAndView.addObject("errorMessage", exception.getReason());
+        System.out.println(exception);
         return modelAndView;
     }
     

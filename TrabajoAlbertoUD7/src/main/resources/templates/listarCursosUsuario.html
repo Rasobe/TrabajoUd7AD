@@ -61,6 +61,7 @@
 				<th>titulo</th>
 				<th>descripcion</th>
 				<th>fecha inicio</th>
+				<th>horas</th>
 				<th>editar</th>
 				<th>eliminar</th>
 			</tr>
@@ -70,6 +71,7 @@
 				<td th:text="${curso.titulo}"></td>
 				<td th:text="${curso.descripcion}"></td>
 				<td th:text="${curso.fechaInicio}"></td>
+				<td th:text="${curso.horas}"></td>
 				<td><a class="btn btn-primary btn-xs" style="min-inline-size: -webkit-fill-available;"
 						th:href="@{/cursos/editar/} + ${curso.id}" th:text="'Editar'"></a>
 				</td>

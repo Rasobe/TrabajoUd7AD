@@ -22,14 +22,15 @@
 	<div class="form-group row" style="place-content: center; padding-top: 3ch;">
 		<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Titulo</label>
 		<div class="col-sm-6">
-			<input type="text" th:field="*{titulo}" class="form-control" th:errorclass="'form-control alert-danger'" />
+			<input type="text" th:field="*{titulo}" required="true" class="form-control"
+				th:errorclass="'form-control alert-danger'" />
 			<small class="form-text text-danger" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></small>
 		</div>
 	</div>
 	<div class="form-group row" style="place-content: center; padding-top: 3ch;">
 		<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Descripción</label>
 		<div class="col-sm-6">
-			<input type="text" th:field="*{descripcion}" class="form-control"
+			<input type="text" th:field="*{descripcion}" required="true" class="form-control"
 				th:errorclass="'form-control alert-danger'" /> <small class="form-text text-danger"
 				th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></small>
 		</div>
@@ -37,9 +38,17 @@
 	<div class="form-group row" style="place-content: center; padding-top: 3ch;">
 		<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Fecha de inicio</label>
 		<div class="col-sm-6">
-			<input type="date" th:field="*{fechaInicio}" class="form-control"
+			<input type="date" th:field="*{fechaInicio}" required="true" class="form-control"
 				th:errorclass="'form-control alert-danger'" /> <small class="form-text text-danger"
 				th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></small>
+		</div>
+	</div>
+	<div class="form-group row" style="place-content: center; padding-top: 3ch;">
+		<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Horas</label>
+		<div class="col-sm-6">
+			<input type="number" th:field="*{horas}" required="true" class="form-control"
+				th:errorclass="'form-control alert-danger'" /> <small class="form-text text-danger"
+				th:if="${#fields.hasErrors('horas')}" th:errors="*{horas}"></small>
 		</div>
 	</div>
 	<div class="form-group row" style="place-content: center; text-align-last: center; padding-top: 3ch;">

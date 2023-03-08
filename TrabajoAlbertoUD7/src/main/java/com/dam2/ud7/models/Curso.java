@@ -14,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 @Entity
 @Table(name = "cursos")
@@ -31,6 +32,9 @@ public class Curso {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fechaInicio;
+	
+	@NumberFormat
+	private float horas;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_curso")
@@ -44,12 +48,14 @@ public class Curso {
 		this.usuario = usuario;
 	}
 
-	public Curso(long id, @NotEmpty String titulo, @NotEmpty String descripcion, @NotEmpty Date fechaInicio) {
+	public Curso(long id, @NotEmpty String titulo, @NotEmpty String descripcion, @NotEmpty Date fechaInicio,
+			@NumberFormat float horas) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.fechaInicio = fechaInicio;
+		this.horas = horas;
 	}
 
 	public long getId() {
@@ -89,6 +95,14 @@ public class Curso {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.fechaInicio = fechaInicio;
+	}
+
+	public float getHoras() {
+		return horas;
+	}
+
+	public void setHoras(float horas) {
+		this.horas = horas;
 	}
 
 	public Curso() {

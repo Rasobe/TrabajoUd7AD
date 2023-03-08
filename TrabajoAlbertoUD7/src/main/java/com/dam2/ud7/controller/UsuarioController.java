@@ -3,12 +3,16 @@ package com.dam2.ud7.controller;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +36,12 @@ public class UsuarioController {
 
 	@GetMapping({ "/login", "/" })
 	public String login(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+			return "redirect:/usuarios";
+		} else if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
+			return "redirect:/cursos";
+		}
 		return "login";
 	}
 
@@ -45,27 +55,32 @@ public class UsuarioController {
 
 	public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult rsult, Model model,
 			SessionStatus status) {
-		usuario.setEnabled(true);
-		usuario.setRole("ROLE_USER");
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		usuario.setPassword(encoder.encode(usuario.getPassword()));
 		for (Usuario u : siu.findAll()) {
 			if (u.getUsername().equalsIgnoreCase(usuario.getUsername())) {
 				return "register";
 			}
 		}
+		usuario.setEnabled(true);
+		usuario.setRole("ROLE_USER");
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		usuario.setPassword(encoder.encode(usuario.getPassword()));
 		siu.save(usuario);
 		return "login";
 	}
 
-	@GetMapping("/logout")
-	public String logout(Model model) {
-		return "redirect:login/?logout";
+	@GetMapping(value = "/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null) {
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+	    return "redirect:/login?logout";
 	}
+
+
 
 	@GetMapping(value = "/usuarios/crear")
 	public String crearUsuario(Model model) {
-
 		model.addAttribute("titulo", "Crear usuario");
 		model.addAttribute("usuario", new Usuario());
 		return "crearUsuarioForm";
@@ -74,8 +89,18 @@ public class UsuarioController {
 	@PostMapping(value = "/usuarios/guardar")
 	public String guardarCurso(@Valid Usuario usuario, BindingResult result, Model model, SessionStatus status) {
 		status.setComplete();
-		usuario.setRole("ROLE_USER");
-		usuario.setEnabled(true);
+		for (Usuario u : siu.findAll()) {
+			if (u.getUsername().equalsIgnoreCase(usuario.getUsername())) {
+				 // si se cumple la condición, muestra un mensaje de error
+			    String mensaje = "El nombre de usuario ya existe. Por favor, elija otro nombre de usuario.";
+				return "redirect:/usuarios/editar/miperfil";
+			}
+		}
+		if (usuario.getRole() == null) {
+			usuario.setRole("ROLE_USER");
+			usuario.setEnabled(true);
+		}
+
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		usuario.setPassword(encoder.encode(usuario.getPassword()));
 		siu.save(usuario);

@@ -24,23 +24,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authoritiesByUsernameQuery("select username, role from usuarios where username = ?");
 	}
 
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource) throws Exception {
-//	  auth.jdbcAuthentication()
-//	    .dataSource(dataSource)
-//	    .usersByUsernameQuery("Select * from users where username=?")
-//	    .passwordEncoder(new BCryptPasswordEncoder());
-//
-//	  // or
-//	  auth.userDetailsService(null).passwordEncoder(new BCryptPasswordEncoder());
-//	}
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/login", "/register", "/register/guardar").permitAll().anyRequest()
-				.authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/usuarios").permitAll().and()
-				.logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true)
-				.deleteCookies("JSESSIONID").permitAll();
+		 http.authorizeRequests()
+         .antMatchers("/login", "/register", "/register/guardar").permitAll()
+         .antMatchers("/usuarios/editar/miperfil").hasAnyRole("USER", "ADMIN")
+         .antMatchers("/usuarios/**").hasRole("ADMIN") // Restringe el acceso a todas las URLs relacionadas con /usuarios
+         .anyRequest().authenticated()
+         .and()
+     .formLogin()
+         .loginPage("/login").permitAll()
+         .and()
+     .logout()
+         .logoutUrl("/logout")
+         .logoutSuccessUrl("/login?logout")
+         .invalidateHttpSession(true)
+         .deleteCookies("JSESSIONID").permitAll();
 	}
-
+	
 }

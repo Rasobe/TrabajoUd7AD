@@ -59,6 +59,7 @@
 	<table class="table table-striped">
 		<thead class="bg-success text-white">
 			<tr>
+				<th>imagen</th>
 				<th>username</th>
 				<th>email</th>
 				<th>password</th>
@@ -71,6 +72,7 @@
 		</thead>
 		<tbody>
 			<tr th:each="usuario: ${usuarios}">
+				<td ><img th:src="@{${'/img/' + usuario.imagen}}" width="50ch"/></td>
 				<td th:text="${usuario.username}"></td>
 				<td th:text="${usuario.email}"></td>
 				<td th:text="${usuario.password}"></td>

@@ -26,13 +26,13 @@
 			<div class="form-group row" style="place-content: center; padding-top: 3ch;">
 				<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Imagen</label>
 				<div class="col-sm-6">
-					<input type="file" name="file" class="form-control" id="imagen" />
+					<input type="file" th:src="*{imagen}" name="file" class="form-control" id="imagen" />
 				</div>
 			</div>
 			<div class="form-group row" style="place-content: center; padding-top: 3ch;">
 				<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Username</label>
 				<div class="col-sm-6" id="mensaje-error">
-					<input type="text" th:placeholder="*{username}" class="form-control" required="true"
+					<input type="text" th:placeholder="*{username}" class="form-control"
 						/> 
 				</div>
 			</div>

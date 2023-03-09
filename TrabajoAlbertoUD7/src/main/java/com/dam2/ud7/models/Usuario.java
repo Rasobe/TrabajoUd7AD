@@ -33,6 +33,8 @@ public class Usuario {
 
 	@Column(name = "role")
 	private String role;
+	
+	private String imagen;
 
 	// constructor vacío
 	public Usuario() {
@@ -92,6 +94,14 @@ public class Usuario {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
 	}
 
 	@Override

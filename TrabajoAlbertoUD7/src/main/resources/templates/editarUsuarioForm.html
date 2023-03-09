@@ -32,8 +32,9 @@
 			<div class="form-group row" style="place-content: center; padding-top: 3ch;">
 				<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Username</label>
 				<div class="col-sm-6" id="mensaje-error">
-					<input type="text" th:placeholder="*{username}" class="form-control" required="true"
-						/> 
+					<input type="text" th:field="*{username}" class="form-control" required="true"
+						th:errorclass="'form-control alert-danger'" /> <small class="form-text text-danger"
+						th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
 				</div>
 			</div>
 			<div class="form-group row" style="place-content: center; padding-top: 3ch;">
@@ -55,7 +56,7 @@
 				<label th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="col-sm-2 col-form-label"
 					style="TEXT-ALIGN-LAST: RIGHT;">Role</label>
 				<div class="col-sm-6" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-					<input type="text" placeholder="Por defecto se pone como 'role' ROLE_USER" th:field="*{role}" class="form-control" th:errorclass="'form-control alert-danger'" /> <small class="form-text text-danger"
+					<input type="text" placeholder="Por defecto se pone como 'role' ROLE_USER y 'enabled'' activado" th:field="*{role}" class="form-control" th:errorclass="'form-control alert-danger'" /> <small class="form-text text-danger"
 						th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></small>
 				</div>
 			</div>

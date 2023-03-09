@@ -1,5 +1,9 @@
 package com.dam2.ud7.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
 
@@ -8,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,13 +22,19 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dam2.ud7.models.Usuario;
 import com.dam2.ud7.service.ServiceImplementationUsuario;
@@ -70,14 +82,12 @@ public class UsuarioController {
 
 	@GetMapping(value = "/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null) {
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
-	    return "redirect:/login?logout";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		return "redirect:/login?logout";
 	}
-
-
 
 	@GetMapping(value = "/usuarios/crear")
 	public String crearUsuario(Model model) {
@@ -87,24 +97,55 @@ public class UsuarioController {
 	}
 
 	@PostMapping(value = "/usuarios/guardar")
-	public String guardarCurso(@Valid Usuario usuario, BindingResult result, Model model, SessionStatus status) {
-		status.setComplete();
-		for (Usuario u : siu.findAll()) {
-			if (u.getUsername().equalsIgnoreCase(usuario.getUsername())) {
-				 // si se cumple la condición, muestra un mensaje de error
-			    String mensaje = "El nombre de usuario ya existe. Por favor, elija otro nombre de usuario.";
-				return "redirect:/usuarios/editar/miperfil";
-			}
-		}
+	public String guardarCurso(@Valid Usuario usuario, BindingResult result, Model model,
+			@RequestPart("file") MultipartFile imagen, @RequestParam("password") String password, SessionStatus status) {
+
+//		for (Usuario u : siu.findAll()) {
+//			if (u.getUsername().equalsIgnoreCase(usuario.getUsername())) {
+//				return "redirect:/usuarios/editar/miperfil";
+//			}
+//		}
+
 		if (usuario.getRole() == null) {
 			usuario.setRole("ROLE_USER");
-			usuario.setEnabled(true);
 		}
 
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		usuario.setPassword(encoder.encode(usuario.getPassword()));
+		
+		
+		System.out.println(imagen.getOriginalFilename());
+
+		if (!imagen.isEmpty()) {
+			Path directorioImagenes = Paths.get("src//main//resources//static//img");
+			String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+
+			try {
+				byte[] bytesImg = imagen.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+				Files.write(rutaCompleta, bytesImg);
+
+				usuario.setImagen(imagen.getOriginalFilename());
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		if (!password.isEmpty()) {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			usuario.setPassword(encoder.encode(password));
+		} else {
+			usuario.setPassword(siu.findByUsername(usuario.getUsername()).getPassword());
+		}
+			
+		status.setComplete();
 		siu.save(usuario);
-		return "redirect:/usuarios";
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+			return "redirect:/usuarios";
+		}
+		return "redirect:/cursos";
 	}
 
 	@GetMapping(value = "/usuarios/editar/{id}")

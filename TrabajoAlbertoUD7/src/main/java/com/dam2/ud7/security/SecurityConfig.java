@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		 http.authorizeRequests()
          .antMatchers("/login", "/register", "/register/guardar").permitAll()
-         .antMatchers("/usuarios/editar/miperfil").hasAnyRole("USER", "ADMIN")
+         .antMatchers("/usuarios/editar/miperfil", "/usuarios/guardar").hasAnyRole("USER", "ADMIN")
          .antMatchers("/usuarios/**").hasRole("ADMIN") // Restringe el acceso a todas las URLs relacionadas con /usuarios
          .anyRequest().authenticated()
          .and()

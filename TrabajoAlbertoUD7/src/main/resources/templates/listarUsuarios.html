@@ -42,7 +42,7 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
 						aria-haspopup="true" aria-expanded="false">
-						Configuración
+						<img th:src="@{${'/img/' + imagen}}" width="30ch"/>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 						<a class="dropdown-item" th:href="@{/usuarios/editar/miperfil}">Mi usuario</a>
@@ -53,8 +53,7 @@
 		</div>
 	</nav>
 
-	<h1 style="width: 100%; padding:1%; margin-bottom: 0%;" class="text-white bg-success" th:text="${titulo}">
-	</h1>
+	<h1 style="width: 100%; padding:1%; margin-bottom: 0%;" class="text-white bg-success" th:text="${titulo}"></h1>
 
 	<table class="table table-striped">
 		<thead class="bg-success text-white">

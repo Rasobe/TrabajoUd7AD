@@ -17,15 +17,12 @@ public class Usuario {
 	private Long id;
 
 	@Column(name = "username")
-	@NotEmpty
 	private String username;
 
 	@Column(name = "password")
-	@NotEmpty
 	private String password;
 
 	@Column(name = "email")
-	@NotEmpty
 	private String email;
 
 	@Column(name = "enabled")

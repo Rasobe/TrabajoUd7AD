@@ -26,20 +26,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		 http.authorizeRequests()
-         .antMatchers("/login", "/register", "/register/guardar").permitAll()
-         .antMatchers("/usuarios/editar/miperfil", "/usuarios/guardar").hasAnyRole("USER", "ADMIN")
-         .antMatchers("/usuarios/**").hasRole("ADMIN") // Restringe el acceso a todas las URLs relacionadas con /usuarios
-         .anyRequest().authenticated()
-         .and()
-     .formLogin()
-         .loginPage("/login").permitAll()
-         .and()
-     .logout()
-         .logoutUrl("/logout")
-         .logoutSuccessUrl("/login?logout")
-         .invalidateHttpSession(true)
-         .deleteCookies("JSESSIONID").permitAll();
+	    http.authorizeRequests()
+	        .antMatchers("/login", "/register", "/register/guardar").permitAll()
+	        .antMatchers("/usuarios/editar/miperfil", "/usuarios/editar/guardar").hasAnyRole("USER", "ADMIN")
+	        .antMatchers("/usuarios/**").hasRole("ADMIN") // Restringe el acceso a todas las URLs relacionadas con /usuarios
+	        .anyRequest().authenticated()
+	        .and()
+	    .formLogin()
+	        .loginPage("/login").permitAll()
+	        .and()
+	    .logout()
+	        .logoutUrl("/logout")
+	        .logoutSuccessUrl("/login?logout")
+	        .invalidateHttpSession(true)
+	        .deleteCookies("JSESSIONID").permitAll();
 	}
 	
 }

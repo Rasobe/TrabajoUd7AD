@@ -84,13 +84,18 @@
 	</table>
 
 	<div style="text-align-last: center;">
-		<a class="btn btn-warning" th:href="@{/cursos/{user}(user=${username}, page=${cursos.number - 1})}">&laquo;
+		<div th:unless="${primero}">
+            <a class="btn btn-warning"
+                th:href="@{/cursos/{user}(user=${username}, page=${cursos.number - 1})}">&laquo;
 			Anterior</a>
-		<a class="btn btn-warning" th:href="@{/cursos/{user}(user=${username}, page=${cursos.number + 1})}">&raquo;
-			Siguiente</a>
+        </div>
+       <div th:unless="${ultimo}">
+            <a class="btn btn-warning"
+                th:href="@{/cursos/{user}(user=${username}, page=${cursos.number - 1})}">&laquo;
+			Anterior</a>
+        </div>
 	</div>
-
-
+	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

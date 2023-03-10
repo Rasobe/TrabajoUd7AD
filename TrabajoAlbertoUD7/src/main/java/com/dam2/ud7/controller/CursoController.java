@@ -8,9 +8,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.QPageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -80,23 +77,45 @@ public class CursoController {
 
 	@GetMapping(value = "/cursos")
 	public String listar(@RequestParam(name = "page", defaultValue = "0")int page, Model model) {
+		Page<Curso> pages = sic.findAll(PageRequest.of(page, 5));
 		model.addAttribute("titulo", "Listado de cursos");
-		model.addAttribute("cursos", sic.findAll(PageRequest.of(page, 5)));
+		model.addAttribute("cursos", pages);
+		if (page == 0) {
+			model.addAttribute("primero", "primero");
+		}
+		if (pages.getTotalPages() - 1 == page) {
+			model.addAttribute("ultimo", "ultimo");
+		}
+		System.out.println(page);
 		return "listarCursos";
 	}
 	
 	@GetMapping("/cursos/miscursos")
 	public String modificarMiperfil(@RequestParam(name = "page", defaultValue = "0")int page, Model model) {
-		model.addAttribute("cursos", sic.findAllByUsuario(PageRequest.of(page, 5), siu.findByUsername(currentUser())));
+		Page<Curso> pages = sic.findAllByUsuario(PageRequest.of(page, 5), siu.findByUsername(currentUser()));
+		model.addAttribute("cursos", pages);
 		model.addAttribute("titulo", "Mis cursos");
+		if (page == 0) {
+			model.addAttribute("primero", "primero");
+		}
+		if (pages.getTotalPages() - 1 == page) {
+			model.addAttribute("ultimo", "ultimo");
+		}
 		return "listarMisCursos";
 	}
 	
 	@GetMapping(value = "/cursos/{username}")
 	public String mostrarCursosDeUsuario(@RequestParam(name = "page", defaultValue = "0")int page, @PathVariable(value = "username") String username, Model model) {
-		model.addAttribute("cursos", sic.findAllByUsuario(PageRequest.of(page, 5), siu.findByUsername(username)));
+		Page<Curso> pages = sic.findAllByUsuario(PageRequest.of(page, 5), siu.findByUsername(username));
+		model.addAttribute("cursos", pages);
 		model.addAttribute("titulo", "Cursos de " + username);
 		model.addAttribute("username", username);
+		if (page == 0) {
+			model.addAttribute("primero", "primero");
+		}
+		if (pages.getTotalPages() - 1 == page) {
+			model.addAttribute("ultimo", "ultimo");
+		}
 		return "listarCursosUsuario";
 	}
 	

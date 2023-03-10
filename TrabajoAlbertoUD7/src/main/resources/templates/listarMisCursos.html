@@ -85,8 +85,14 @@
 	</table>
 	
 	<div style="text-align-last: center;">
-		<a class="btn btn-warning" th:href="@{/cursos/miscursos(page=__${cursos.number - 1}__) }">&laquo; Anterior</a>
-		<a class="btn btn-warning" th:href="@{/cursos/miscursos(page=__${cursos.number + 1}__) }">Siguiente &raquo;</a>
+		<div th:unless="${primero}">
+            <a class="btn btn-warning"
+                th:href="@{/cursos/miscursos(page=__${cursos.number - 1}__) }">&laquo; Anterior</a>
+        </div>
+       <div th:unless="${ultimo}">
+            <a class="btn btn-warning"
+                th:href="@{/cursos/miscursos(page=__${cursos.number + 1}__) }">Siguiente &raquo;</a>
+        </div>
 	</div>
 	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

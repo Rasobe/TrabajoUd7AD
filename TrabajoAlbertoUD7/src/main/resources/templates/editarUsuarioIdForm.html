@@ -23,6 +23,7 @@
 		</h1>
 
 		<form th:action="@{/usuarios/editar/id/guardar}" th:object="${usuario}" method="post" enctype="multipart/form-data">
+			<p class="text-error text-center" th:text="${error}"></p>
 			<div class="form-group row" style="place-content: center; padding-top: 3ch;">
 				<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Imagen</label>
 				<div class="col-sm-6">

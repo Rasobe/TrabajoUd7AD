@@ -65,6 +65,7 @@ public class UsuarioController {
 			SessionStatus status) {
 		for (Usuario u : siu.findAll()) {
 			if (u.getUsername().equalsIgnoreCase(usuario.getUsername())) {
+				model.addAttribute("error", "El usuario ya existe");
 				return "register";
 			}
 		}
@@ -129,6 +130,7 @@ public class UsuarioController {
 			if (contador > 0) {
 				model.addAttribute("usuario", siu.findByUsername(currentUser()));
 				model.addAttribute("titulo", "Editar usuario " + currentUser());
+				model.addAttribute("error", "El usuario ya existe");
 				return "editarUsuarioForm";
 			}
 		}
@@ -271,6 +273,7 @@ public class UsuarioController {
 				Usuario usu = siu.findById(usuario.getId()).get();
 				model.addAttribute("usuario", usu);
 				model.addAttribute("titulo", "Editar usuario " + usu.getUsername());
+				model.addAttribute("error", "El usuario ya existe");
 				return "editarUsuarioIdForm";
 			}
 		}
@@ -305,7 +308,15 @@ public class UsuarioController {
 	}
 
 	@GetMapping(value = "/usuarios/eliminar/{id}")
-	public String eliminar(@PathVariable(value = "id") Long id) {
+	public String eliminar(@PathVariable(value = "id") Long id, Model model) {
+		System.out.println(id + " - " + siu.findByUsername(currentUser()).getId());
+		if (Objects.equals(id, siu.findByUsername(currentUser()).getId())) {
+			model.addAttribute("error", "No te puedes eliminar a ti mismo");
+			model.addAttribute("titulo", "Listado de usuarios");
+			model.addAttribute("usuarios", siu.findAll());
+			model.addAttribute("imagen", siu.findByUsername(currentUser()).getImagen());
+			return "listarUsuarios";
+		}
 		if (id > 0) {
 			siu.deleteById(id);
 		}

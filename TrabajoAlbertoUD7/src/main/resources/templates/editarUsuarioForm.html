@@ -21,8 +21,9 @@
 	<h1 style="width: 100%; padding:1%; margin-bottom: 0%;" class="text-white bg-success" th:text="${titulo}"></h1>
 	<div class="container">
 		</h1>
-
 		<form th:action="@{/usuarios/editar/guardar}" th:object="${usuario}" method="post" enctype="multipart/form-data">
+			<p class="text-error text-center" th:text="${error}"></p>
+			<p class="text-error text-center mg-5" style="color:red;">Si cambias tu nombre de usuario, se cerrará la sesión automáticamente</p>
 			<div class="form-group row" style="place-content: center; padding-top: 3ch;">
 				<label class="col-sm-2 col-form-label" style="TEXT-ALIGN-LAST: RIGHT;">Imagen</label>
 				<div class="col-sm-6">
